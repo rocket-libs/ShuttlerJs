@@ -2,19 +2,19 @@
 class Shuttler {
     constructor(initialModel) {
         this.model = {};
-        this.listners = [];
+        this.listeners = [];
         this.push(initialModel);
     }
     subscribe(fn) {
-        this.listners.push(fn);
-        const unsubscribe = () => this.listners = this.listners.filter(singleFn => singleFn !== fn);
+        this.listeners.push(fn);
+        const unsubscribe = () => this.listeners = this.listeners.filter(singleFn => singleFn !== fn);
         return unsubscribe;
     }
     push(model) {
         const modelChanged = this.differentObject(this.model, model);
         if (modelChanged) {
             this.model = model;
-            this.listners.map(singleFn => singleFn(model));
+            this.listeners.map(singleFn => singleFn(model));
         }
     }
     differentObject(oldModel, newModel) {
