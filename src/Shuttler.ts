@@ -1,23 +1,25 @@
 export default class Shuttler<TModel>{
     model: TModel = {} as TModel;
+    push: () => void;
 
     constructor(initialModel: TModel){
-      this.push(initialModel);
+      this.writeModel(initialModel);
+      this.push = () => this.writeModel(this.model);
     }
 
-    listners: {(model: TModel): void; } [] = [];
+    private listeners: {(model: TModel): void; } [] = [];
 
     subscribe( fn: (model: TModel) => void) : () => void {
-        this.listners.push(fn);
-        const unsubscribe = () => this.listners = this.listners.filter(singleFn => singleFn !== fn);
+        this.listeners.push(fn);
+        const unsubscribe = () => this.listeners = this.listeners.filter(singleFn => singleFn !== fn);
         return unsubscribe;
     }
 
-    push(model: TModel){
+    writeModel(model: TModel){
         const modelChanged = this.differentObject(this.model,model);
         if(modelChanged){
           this.model = model;
-          this.listners.map(singleFn => singleFn(model));
+          this.listeners.map(singleFn => singleFn(model));
         }
     }
 
