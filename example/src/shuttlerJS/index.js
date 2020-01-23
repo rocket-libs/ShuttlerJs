@@ -23,7 +23,6 @@ class Shuttler {
         this.writeModel(initialModel);
         this.push = () => {
             this.writeModel(this.model);
-            this.broadcastModelChanged();
         };
     }
     /**
