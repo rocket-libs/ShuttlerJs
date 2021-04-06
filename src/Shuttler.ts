@@ -38,7 +38,11 @@ export default class Shuttler<TModel>{
       }
     }
 
-    private listeners: Listener<TModel>[] = [];
+    private _listeners: Listener<TModel>[] = [];
+
+    public get broadcastListeners() : Listener<TModel>[] {
+      return this._listeners;
+    }
 
     /**
      * This method allows you to add a listener for changes to the model.
@@ -50,13 +54,13 @@ export default class Shuttler<TModel>{
         const hashCode = this.getHashCode(fn);
         const notYetSubscribed = this.subscriptionAlreadyExists(hashCode) === false;
         if(notYetSubscribed){
-          this.listeners.push(new Listener<TModel>(hashCode,fn));
+          this._listeners.push(new Listener<TModel>(hashCode,fn));
           const unsubscribe = () => {
-            const candidates = this.listeners.filter(singleListener => singleListener.hashCode === hashCode);
+            const candidates = this._listeners.filter(singleListener => singleListener.hashCode === hashCode);
             if(candidates.length > 1){
               throw new Error(`Multiple listeners with hashcode '${hashCode}' were found subscribing to model change notifications. This is abnormal and is possibly a bug.`);
             }else if(candidates.length === 1){
-              this.listeners.splice(this.listeners.indexOf(candidates[0]),1);
+              this._listeners.splice(this._listeners.indexOf(candidates[0]),1);
               delete candidates[0];
               candidates.splice(0,1);
             }
@@ -85,7 +89,7 @@ export default class Shuttler<TModel>{
      * This method broadcasts to all listeners that the model changed.
      */
     public broadcastModelChanged() {
-      this.listeners.map(singleListener => singleListener.fn(this.model));
+      this._listeners.map(singleListener => singleListener.fn(this.model));
     }
 
     private differentObject(oldModel: TModel, newModel: TModel) {
@@ -93,7 +97,7 @@ export default class Shuttler<TModel>{
     }
     
     private subscriptionAlreadyExists(hasCode: number) : boolean {
-      const candidates = this.listeners.filter(singleListener => singleListener.hashCode === hasCode);
+      const candidates = this._listeners.filter(singleListener => singleListener.hashCode === hasCode);
       return candidates.length === 1;
     }
 
