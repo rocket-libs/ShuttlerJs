@@ -40,6 +40,15 @@ export default class Shuttler<TModel>{
 
     private listeners: Listener<TModel>[] = [];
 
+    /**
+     * Resets the model to an empty object
+     */
+    public clearModel(){
+      this.model = {} as TModel;
+    }
+
+    
+
     
     /**
      * Allows you to check if any listeners are configured for broadcast of changes
