@@ -44,6 +44,12 @@ export default class Shuttler<TModel>{
       return this._listeners;
     }
 
+    public get hasBroadcastListeners() : boolean {
+      return this.broadcastListeners 
+        && Array.isArray(this.broadcastListeners)
+        && this.broadcastListeners.length > 0;
+    }
+
     /**
      * This method allows you to add a listener for changes to the model.
      * Be sure to add at least one listener, otherwise you'll have no way of knowing your model has changed.

@@ -1,4 +1,18 @@
 /**
+ * Contain class for listener functions, that allows then to be paired with a unique hash code.
+ */
+declare class Listener<TModel> {
+    /**
+     * Value that uniquely identifies a listener
+     */
+    hashCode: number;
+    /**
+     * The listener callback function.
+     */
+    fn: (model: TModel) => void;
+    constructor(hashCode: number, fn: (model: TModel) => void);
+}
+/**
  * A simple class to store a model, register callback functions or listeners to notify subscribers of changes to the model.
  * This class also provides as set of methods to broadcast changes.
  */
@@ -10,7 +24,9 @@ export default class Shuttler<TModel> {
      * @param initialModel The initial model, with its initial values
      */
     constructor(initialModel: TModel);
-    private listeners;
+    private _listeners;
+    get broadcastListeners(): Listener<TModel>[];
+    get hasBroadcastListeners(): boolean;
     /**
      * This method allows you to add a listener for changes to the model.
      * Be sure to add at least one listener, otherwise you'll have no way of knowing your model has changed.
@@ -31,3 +47,4 @@ export default class Shuttler<TModel> {
     private subscriptionAlreadyExists;
     private getHashCode;
 }
+export {};
