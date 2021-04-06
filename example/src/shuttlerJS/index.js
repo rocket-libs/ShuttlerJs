@@ -19,19 +19,19 @@ class Shuttler {
      */
     constructor(initialModel) {
         this.model = {};
-        this._listeners = [];
+        this.listeners = [];
         this.writeModel(initialModel);
         this.push = () => {
             this.writeModel(this.model);
         };
     }
-    get broadcastListeners() {
-        return this._listeners;
-    }
+    /**
+     * Allows you to check if any listeners are configured for broadcast of changes
+     */
     get hasBroadcastListeners() {
-        return this.broadcastListeners
-            && Array.isArray(this.broadcastListeners)
-            && this.broadcastListeners.length > 0;
+        return this.listeners
+            && Array.isArray(this.listeners)
+            && this.listeners.length > 0;
     }
     /**
      * This method allows you to add a listener for changes to the model.
@@ -43,14 +43,14 @@ class Shuttler {
         const hashCode = this.getHashCode(fn);
         const notYetSubscribed = this.subscriptionAlreadyExists(hashCode) === false;
         if (notYetSubscribed) {
-            this._listeners.push(new Listener(hashCode, fn));
+            this.listeners.push(new Listener(hashCode, fn));
             const unsubscribe = () => {
-                const candidates = this._listeners.filter(singleListener => singleListener.hashCode === hashCode);
+                const candidates = this.listeners.filter(singleListener => singleListener.hashCode === hashCode);
                 if (candidates.length > 1) {
                     throw new Error(`Multiple listeners with hashcode '${hashCode}' were found subscribing to model change notifications. This is abnormal and is possibly a bug.`);
                 }
                 else if (candidates.length === 1) {
-                    this._listeners.splice(this._listeners.indexOf(candidates[0]), 1);
+                    this.listeners.splice(this.listeners.indexOf(candidates[0]), 1);
                     delete candidates[0];
                     candidates.splice(0, 1);
                 }
@@ -77,13 +77,13 @@ class Shuttler {
      * This method broadcasts to all listeners that the model changed.
      */
     broadcastModelChanged() {
-        this._listeners.map(singleListener => singleListener.fn(this.model));
+        this.listeners.map(singleListener => singleListener.fn(this.model));
     }
     differentObject(oldModel, newModel) {
         return JSON.stringify(oldModel) !== JSON.stringify(newModel);
     }
     subscriptionAlreadyExists(hasCode) {
-        const candidates = this._listeners.filter(singleListener => singleListener.hashCode === hasCode);
+        const candidates = this.listeners.filter(singleListener => singleListener.hashCode === hasCode);
         return candidates.length === 1;
     }
     getHashCode(fn) {
