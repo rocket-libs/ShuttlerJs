@@ -1,7 +1,7 @@
 /**
  * Contain class for listener functions, that allows then to be paired with a unique hash code.
  */
-declare class Listener<TModel> {
+export declare class Listener<TModel> {
     /**
      * Value that uniquely identifies a listener
      */
@@ -47,4 +47,3 @@ export default class Shuttler<TModel> {
     private subscriptionAlreadyExists;
     private getHashCode;
 }
-export {};

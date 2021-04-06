@@ -1,7 +1,7 @@
 /**
  * Contain class for listener functions, that allows then to be paired with a unique hash code.
  */
-class Listener<TModel>{
+export class Listener<TModel>{
   /**
    * Value that uniquely identifies a listener
    */
