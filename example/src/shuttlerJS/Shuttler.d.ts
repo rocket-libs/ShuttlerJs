@@ -12,6 +12,10 @@ export default class Shuttler<TModel> {
     constructor(initialModel: TModel);
     private listeners;
     /**
+     * Resets the model to an empty object
+     */
+    clearModel(): void;
+    /**
      * Allows you to check if any listeners are configured for broadcast of changes
      */
     get hasBroadcastListeners(): boolean;

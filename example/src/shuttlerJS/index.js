@@ -26,6 +26,12 @@ class Shuttler {
         };
     }
     /**
+     * Resets the model to an empty object
+     */
+    clearModel() {
+        this.model = {};
+    }
+    /**
      * Allows you to check if any listeners are configured for broadcast of changes
      */
     get hasBroadcastListeners() {
