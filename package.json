@@ -16,6 +16,7 @@
   "types": "dist/index.d.ts",
   "devDependencies": {
     "@babel/plugin-proposal-optional-chaining": "^7.7.5",
+    "@types/jest": "^26.0.22",
     "@types/styled-components": "^4.4.0",
     "@typescript-eslint/eslint-plugin": "^2.9.0",
     "@typescript-eslint/parser": "^2.9.0",
@@ -25,10 +26,12 @@
     "eslint-plugin-prettier": "^3.1.1",
     "eslint-plugin-react": "^7.16.0",
     "install-peers-cli": "^2.1.1",
+    "jest": "^26.6.3",
     "prepend-file": "^1.3.1",
     "prettier": "^1.19.1",
     "rollup": "^1.27.5",
     "rollup-plugin-typescript2": "^0.25.2",
+    "ts-jest": "^26.5.4",
     "ts-node": "^8.5.2",
     "tslib": "^1.10.0",
     "typescript": "^3.7.5"
@@ -41,7 +44,7 @@
     "start-example": "cd example && npm start",
     "deploy-example": "cd example && npm run deploy",
     "dev": "concurrently --kill-others \"npm run build-watch\" \"npm run start-example\"",
-    "test": "ts-node test/test.ts",
+    "test": "jest",
     "pretest": "yarn run build",
     "test:lint": "eslint ./src/**/*.ts ./src/**/*.tsx ./example/src/**/*.ts ./example/src/**/*.tsx",
     "test:lint:fix": "yarn run test:lint -- --fix"
